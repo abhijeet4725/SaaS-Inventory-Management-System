@@ -1,0 +1,44 @@
+# Test profile configuration
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  # Use H2 for tests
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+
+  # Disable MongoDB for unit tests
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration
+
+  # Disable Redis for unit tests
+  data:
+    redis:
+      repositories:
+        enabled: false
+
+  flyway:
+    enabled: false
+
+# Disable rate limiting in tests
+app:
+  rate-limit:
+    enabled: false
+  jwt:
+    secret: test-secret-key-for-development-only-change-in-production
+
+logging:
+  level:
+    root: WARN
+    com.saasproject: DEBUG
